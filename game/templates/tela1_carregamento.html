@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP Foundation - Inicializando</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="terminal-body">
+    <pre id="log-text"></pre>
+    <span id="cursor">█</span>
+
+    <script>
+        const logElement = document.getElementById('log-text');
+        const cursor = document.getElementById('cursor');
+
+        const logLines = [
+            "SCP FOUNDATION — Sistema de Diagnóstico de Contenção v3.8",
+            "ACESSO RESTRITO — Somente pessoal autorizado",
+            "",
+            "Inicializando protocolos de segurança...",
+            "Verificando integridade dos módulos de contenção... OK",
+            "Alinhando diretrizes operacionais com o Comitê de Ética... DIRETRIZES INCOMPATÍVEIS",
+            "Ativando sistemas de monitoramento de integridade humana... INFORMAÇÃO RESTRITA",
+            "",
+            "Atenção: Tentativas de acesso não autorizado resultarão em término imediato da função biológica.",
+            "",
+            "Carregamento concluído.",
+            "Pressione qualquer tecla para iniciar verificação de identidade."
+];
+
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (lineIndex < logLines.length) {
+                const typingSpeed = 20 + Math.random() * 50; 
+                
+                if (charIndex < logLines[lineIndex].length) {
+                    logElement.textContent += logLines[lineIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, typingSpeed);
+                } else {
+                    logElement.textContent += '\n'; 
+                    charIndex = 0;
+                    lineIndex++;
+                    
+                    const lineDelay = 200 + Math.random() * 800;
+                    setTimeout(typeWriter, lineDelay);
+                }
+            } else {
+                cursor.style.animation = 'blink 1s infinite';
+                document.addEventListener('keypress', function() {
+                    window.location.href = "{{ url_for('tela_login') }}";
+                });
+            }
+        }
+        
+        window.onload = function() {
+            typeWriter();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP Foundation - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Estilos gerais de terminal para o corpo da página */
+        .terminal-body {
+            background-color: #000;
+            color: #33FF66; /* Verde fluorescente */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            padding: 20px;
+            margin: 0;
+            position: relative;
+            height: 100vh; /* Ocupa a altura total da tela */
+            overflow: hidden;
+        }
+
+        /* Efeito de scanline para simular um monitor antigo */
+        .terminal-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                transparent 0,
+                rgba(0, 0, 0, 0.3) 1px,
+                rgba(0, 0, 0, 0.1) 3px
+            );
+            pointer-events: none; /* Garante que o efeito não bloqueie cliques */
+        }
+
+        /* Estilo para o texto pré-formatado (tags <pre>) */
+        pre {
+            white-space: pre-wrap; /* Quebra linhas longas automaticamente */
+            word-wrap: break-word; /* Quebra palavras longas */
+        }
+
+        /* Estilos para os campos de entrada de texto */
+        .login-form input {
+            background-color: #000;
+            color: #33FF66;
+            border: 1px solid #33FF66;
+            padding: 10px;
+            margin: 5px 0;
+            font-family: 'Courier New', Courier, monospace;
+            width: 100%;
+            box-sizing: border-box; /* Garante que o padding e a borda não aumentem o tamanho total */
+            transition: border-color 0.3s;
+        }
+
+        /* Efeito ao focar no campo de entrada */
+        .login-form input:focus {
+            border-color: #00FF00;
+            outline: none;
+        }
+
+        /* Estilo para o botão de login */
+        .login-form button {
+            background-color: #33FF66;
+            color: #000;
+            border: 2px solid #33FF66;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        /* Efeito de hover no botão */
+        .login-form button:hover {
+            background-color: #00FF55;
+        }
+
+        /* Efeito de clicar no botão */
+        .login-form button:active {
+            transform: scale(0.95);
+        }
+
+        /* Estilos para o contêiner de login */
+        .login-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        /* Estilo da janela de erro retrô */
+        .retro-window {
+            border: 2px solid #aaa;
+            background-color: #ccc;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            font-family: 'MS Sans Serif', Geneva, sans-serif;
+            box-shadow: 5px 5px 0 #000;
+        }
+
+        /* Barra de título da janela */
+        .window-title-bar {
+            background-color: #000084;
+            color: #fff;
+            padding: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #000;
+            cursor: grab; /* Indica que a janela pode ser arrastada */
+        }
+
+        /* Título da janela */
+        .window-title-bar span {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        /* Botão de fechar da janela */
+        .window-close-btn {
+            background-color: #c0c0c0;
+            border: 1px solid #000;
+            width: 16px;
+            height: 14px;
+            font-size: 10px;
+            line-height: 10px;
+            padding: 0;
+            box-shadow: 1px 1px 0 #fff;
+            cursor: pointer;
+        }
+
+        /* Conteúdo da janela */
+        .window-content {
+            padding: 15px;
+            background-color: #c0c0c0;
+            text-align: center;
+        }
+
+        /* Botão retrô de 'OK' */
+        .retro-button {
+            background-color: #c0c0c0;
+            border: 2px outset #fff;
+            padding: 3px 15px;
+            margin-top: 10px;
+            font-family: 'MS Sans Serif', Geneva, sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Efeito de botão pressionado */
+        .retro-button:active {
+            border-style: inset;
+        }
+    </style>
+</head>
+<body class="terminal-body">
+    <div class="login-container">
+        <!-- Texto do terminal (já exibido na tela) -->
+        <pre id="log-text">
+SCP FOUNDATION
+Sistema de Diagnóstico de Contenção v3.8
+ACESSO RESTRITO — Somente pessoal autorizado
+
+Inicializando protocolos de segurança...
+Verificando integridade dos módulos de contenção... OK
+Alinhando diretrizes operacionais com o Comitê de Ética... DIRETRIZES INCOMPATÍVEIS
+Ativando sistemas de monitoramento de integridade humana... INFORMAÇÃO RESTRITA
+
+Atenção: Tentativas de acesso não autorizado resultarão em término imediato da função biológica.
+
+Carregamento concluído.
+Pressione qualquer tecla para iniciar verificação de identidade.
+        </pre>
+
+        <!-- Formulário de login -->
+        <form action="{{ url_for('tela_login') }}" method="post" class="login-form">
+            <label for="codigo_acesso">Código de Acesso</label>
+            <input type="password" id="codigo_acesso" name="codigo_acesso" required>
+            <br>
+            <!-- Texto do botão alterado para 'Validar' -->
+            <button type="submit">Validar</button>
+        </form>
+
+        <!-- Se houver erro, mostra a janela retro -->
+        {% if erro %}
+        <div class="retro-window erro-window">
+            <div class="window-title-bar">
+                <span>ERRO CRÍTICO</span>
+                <button class="window-close-btn"></button>
+            </div>
+            <div class="window-content">
+                <p>{{ erro }}</p>
+                <button class="retro-button" onclick="this.parentNode.parentNode.style.display='none'">OK</button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Não há mais animação de digitação, o texto está carregado automaticamente.
+    </script>
+</body>
+</html>

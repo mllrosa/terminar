@@ -1,0 +1,8 @@
+├── app.py                     # O arquivo principal com o código Python (pode ser chamado de app.py ou main.py)
+├── static/                    # Pasta para arquivos estáticos (CSS, JS, imagens)
+│   └── css/                   # Subpasta para arquivos CSS
+│       └── style.css          # O arquivo de estilo do seu jogo
+└── templates/                 # Pasta para os arquivos HTML
+    ├── tela1_carregamento.html  # Tela de carregamento/inicialização
+    ├── tela2_login.html         # Tela de login
+    └── tela3_briefing.html      # Tela de briefing (a próxima que vamos criar)
